@@ -213,4 +213,5 @@ dependencies: \
   /Users/tongbohan/Desktop/vision_client/opencv_install/include/opencv4/opencv2/flann/defines.h \
   /Users/tongbohan/Desktop/vision_client/opencv_install/include/opencv4/opencv2/flann/config.h \
   /Users/tongbohan/Desktop/vision_client/opencv_install/include/opencv4/opencv2/core/affine.hpp \
-  /Users/tongbohan/Desktop/vision_client/opencv_install/include/opencv4/opencv2/imgproc.hpp
+  /Users/tongbohan/Desktop/vision_client/opencv_install/include/opencv4/opencv2/imgproc.hpp \
+  /Users/tongbohan/Desktop/vision_client/vision_client/vision_client/vision.hpp
