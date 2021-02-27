@@ -16,6 +16,7 @@
 		2536582A25DEA8EF003B9460 /* libopencv_aruco.4.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2536582225DEA8EF003B9460 /* libopencv_aruco.4.0.0.dylib */; };
 		2536582B25DEA8EF003B9460 /* libopencv_calib3d.4.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2536582325DEA8EF003B9460 /* libopencv_calib3d.4.0.0.dylib */; };
 		2536582C25DEA8EF003B9460 /* libopencv_highgui.4.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2536582425DEA8EF003B9460 /* libopencv_highgui.4.0.0.dylib */; };
+		25B3616825EA740E005235A2 /* vision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25B3616625EA740E005235A2 /* vision.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,9 @@
 		2536582425DEA8EF003B9460 /* libopencv_highgui.4.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.4.0.0.dylib; path = ../opencv_install/lib/libopencv_highgui.4.0.0.dylib; sourceTree = "<group>"; };
 		2536583925DEB718003B9460 /* vision_client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = vision_client.entitlements; sourceTree = "<group>"; };
 		2536584F25DF6D76003B9460 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2593F23F25E79F8D00FE9A18 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = "../../../../../usr/local/Cellar/openssl@1.1/1.1.1j/lib"; sourceTree = "<group>"; };
+		25B3616625EA740E005235A2 /* vision.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vision.cpp; sourceTree = "<group>"; };
+		25B3616725EA740E005235A2 /* vision.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vision.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,7 @@
 				2536582025DEA8EF003B9460 /* libopencv_videoio.4.0.0.dylib */,
 				2536581025DEA4E2003B9460 /* vision_client */,
 				2536580F25DEA4E2003B9460 /* Products */,
+				2593F23E25E79F8D00FE9A18 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 1;
@@ -95,8 +100,18 @@
 			children = (
 				2536583925DEB718003B9460 /* vision_client.entitlements */,
 				2536581125DEA4E2003B9460 /* main.cpp */,
+				25B3616625EA740E005235A2 /* vision.cpp */,
+				25B3616725EA740E005235A2 /* vision.hpp */,
 			);
 			path = vision_client;
+			sourceTree = "<group>";
+		};
+		2593F23E25E79F8D00FE9A18 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2593F23F25E79F8D00FE9A18 /* lib */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2536581225DEA4E2003B9460 /* main.cpp in Sources */,
+				25B3616825EA740E005235A2 /* vision.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
