@@ -45,14 +45,21 @@ int main(int argc, char** argv){
 
 	Mat frame;
 	Mat light;
+	Mat light_1;
+	namedWindow("camera");
+	namedWindow("light");
+	namedWindow("light_1");
 	while(true){
 		if(!vision.cap.read(frame)){
 			cout << "video ends" << endl;
 			break;
 		}
 		vision.estimatePose_3(frame, light);
+		vision.lightJudge(light, light_1);
 		imshow("camera", frame);
-//		imshow("light", light);
+		imshow("light", light);
+		imshow("light_1", light_1);
+		
 		if (waitKey(delay) == 'q') {
 			break;
 		}

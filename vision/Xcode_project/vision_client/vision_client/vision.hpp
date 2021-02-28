@@ -42,7 +42,7 @@ public:
 	void estimatePose_1(Mat& image, double length, Mat& light_roi);
 	void estimatePose_2(Mat& image, double length, Mat& light_roi);
 	void estimatePose_3(Mat& image, Mat& light_roi);
-	void lightJudge(Mat& image, Mat& light);
+	int lightJudge(Mat& image, Mat& light_roi);
 private:
 	int vision_mode;
 	int width, height;
@@ -51,8 +51,7 @@ private:
 	void writeCameraParam(string filename);
 	bool readCameraParam(string filename);
 	void readArucoMap(string filename, vector<int>& ids, vector<vector<Point3f>>& pts);
-	void detectLight(Mat& image, int markerId, vector<Point2f> markerCorner, Mat& light_roi);
-	
+	void detectLight(Mat& image, int markerId, vector<Point2f> markerCorner, Point2f& left_corner, Point2f& right_corner, Mat& light_roi);
 };
 
 #endif /* vision_hpp */

@@ -87,8 +87,8 @@ void Vision::readArucoMap(string filename, vector<int>& ids, vector<vector<Point
 //	}
 }
 
-void Vision::detectLight(Mat& image, int markerId, vector<Point2f> markerCorner, Mat& light_roi){
-	Point2f right_corner, left_corner, mid;
+void Vision::detectLight(Mat& image, int markerId, vector<Point2f> markerCorner, Point2f& left_corner, Point2f& right_corner, Mat& light_roi){
+	Point2f mid;
 	if (markerId == 0) {
 		left_corner = markerCorner[0];
 	}
@@ -113,11 +113,91 @@ void Vision::detectLight(Mat& image, int markerId, vector<Point2f> markerCorner,
 	rectangle(image, pt1, pt2, Scalar(255,255,0), 4);
 }
 
+int Vision::lightJudge(Mat& image, Mat& light){
+	// 检测信号灯 目前存在少量误检测状况
+	Mat gray, thr;
+	cvtColor(image, gray, COLOR_BGR2GRAY);
+	threshold(gray, gray, 225, 255, THRESH_BINARY);//阈值取出较亮部分
+	Mat kernel = getStructuringElement(MORPH_CROSS, Size(3,3));
+	morphologyEx(gray, thr, MORPH_OPEN, kernel);//开操作，减小干扰
+	light = Mat::zeros(thr.rows, thr.cols, CV_8UC3);
+	//查找所有轮廓
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierarcy;
+	findContours(thr, contours, hierarcy, RETR_EXTERNAL, CHAIN_APPROX_NONE);//检测最外围轮廓，保存所有轮廓点
+	//查找最大面积
+	int largest_area = 0;
+	int largest_contour_index = 0;
+	vector<Point> max_contour;
+	double H, S, V;
+	
+	if(contours.size() > 0){
+		for(int i = 0; i < contours.size(); i++){
+			double area = contourArea(contours[i], false);//计算面积
+			if(area > largest_area){
+				largest_area = area;
+				largest_contour_index = i;
+				max_contour = contours[largest_contour_index];
+			}
+		}
+//		cout << largest_area << endl;
+		drawContours(light, contours, -1, Scalar(0,0,255));
+		
+		if(largest_area > 10){
+			int count_g = 0, count_y = 0, count_r = 0;
+			drawContours(light, contours, largest_contour_index, Scalar(255,255,0));
+			Mat temp = image.clone();
+			cvtColor(temp, temp, COLOR_BGR2HSV);
+			for(int a = 0; a < temp.rows; a++){
+				for(int b = 0; b < temp.cols; b++){
+					Point2f pt(a, b);
+					if(pointPolygonTest(max_contour, pt, true)){
+						H = temp.at<Vec3b>(a,b)[0];
+						S = temp.at<Vec3b>(a,b)[1];
+						V = temp.at<Vec3b>(a,b)[2];
+//						printf("%d %d %d\n", temp.at<Vec3b>(a,b)[0],temp.at<Vec3b>(a,b)[1],temp.at<Vec3b>(a,b)[2]);
+						if((S > 43 && S < 255) || (V > 46 && V < 255)){
+							if(H > 35 && H < 77){
+//								cout << "green" << endl;
+								count_g++;
+							}
+							else if(H > 26 && H < 34){
+//								cout << "yellow" << endl;
+								count_y++;
+							}
+							else if((H > 0 && H < 10) || (H > 156 && H < 180)){
+//								cout << "red" << endl;
+								count_r++;
+							}
+						}
+					}
+				}
+			}
+			if (count_g > count_r && count_g > count_y) {
+				cout << "green" << endl;
+				return 0;
+			}
+			else if (count_y > count_g && count_y > count_r) {
+				cout << "yellow" << endl;
+				return 1;
+			}
+			else {
+				cout << "red" << endl;
+				return 2;
+			}
+		}
+	}
+	return -1;
+}
+
+
+
 void Vision::estimatePose_1(Mat& image, double length, Mat& light_roi){
 	// 使用aruco内置函数估计相机位姿
 	
 	vector<int> markerIds;
 	vector<vector<Point2f>> markerCorners;
+	Point2f right_corner, left_corner;
 	vector<Vec3d> rvecs, tvecs;
 	Mat tvecs_m(3, 1, CV_64FC1);
 	Mat rotM(3,3,CV_64FC1);// 转换为矩阵
@@ -158,7 +238,8 @@ void Vision::estimatePose_1(Mat& image, double length, Mat& light_roi){
 			string str2 = to_string(P_oc(1));
 			string str3 = to_string(P_oc(2));
 			putText(image, "pos: " + str1 + " " + str2 + " " + str3, Point(10, 45), FONT_HERSHEY_SIMPLEX, 0.45, Scalar(255,255,0),1);
-			detectLight(image, markerIds[i], markerCorners[i], light_roi);
+			
+			detectLight(image, markerIds[i], markerCorners[i], right_corner, left_corner, light_roi);
 		}
 	}
 }
@@ -170,6 +251,7 @@ void Vision::estimatePose_2(Mat& image, double length, Mat& light_roi){
 	vector<Point2f> markerCorners2d;
 	vector<int> markerIds;
 	vector<vector<Point2f>> markerCorners;
+	Point2f right_corner, left_corner;
 	Mat rvecs;
 	Mat_<float> tvecs;
 	Mat raux, taux;
@@ -202,7 +284,8 @@ void Vision::estimatePose_2(Mat& image, double length, Mat& light_roi){
 			string str2 = to_string(P_oc(1));
 			string str3 = to_string(P_oc(2));
 			putText(image, "pos: " + str1 + " " + str2 + " " + str3, Point(10, 45), FONT_HERSHEY_SIMPLEX, 0.45, Scalar(255,255,0),1);
-			detectLight(image, markerIds[i], markerCorners[i], light_roi);
+			
+			detectLight(image, markerIds[i], markerCorners[i], right_corner, left_corner, light_roi);
 		}
 	}
 }
@@ -287,7 +370,7 @@ void Vision::estimatePose_3(Mat& image, Mat& light_roi){
 			putText(image, "pos_z: " + str3, Point(10, 65), FONT_HERSHEY_SIMPLEX, 0.45, Scalar(255,255,0),1);
 			markerCorners3d.clear();
 			
-			detectLight(image, markerIds[i], markerCorners[i], light_roi);
+			detectLight(image, markerIds[i], markerCorners[i], right_corner, left_corner, light_roi);
 		}
 	}
 	
