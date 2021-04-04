@@ -1,0 +1,3 @@
+/home/tbh/Desktop/cv/build/CMakeFiles/rebuild_cache.dir
+/home/tbh/Desktop/cv/build/CMakeFiles/cv.dir
+/home/tbh/Desktop/cv/build/CMakeFiles/edit_cache.dir
