@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/Astar.hpp
+stdio.h
+-
+iostream
+-
+fstream
+-
+cmath
+-
+
+/home/tbh/Desktop/Astar/src/Astar.cpp
+Astar.hpp
+/home/tbh/Desktop/Astar/src/Astar.hpp
+
+/home/tbh/Desktop/Astar/src/main.cpp
+iostream
+-
+Astar.hpp
+/home/tbh/Desktop/Astar/src/Astar.hpp
+

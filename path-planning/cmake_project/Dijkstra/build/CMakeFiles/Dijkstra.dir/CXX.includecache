@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/dijkstra.hpp
+stdio.h
+-
+algorithm
+-
+
+/home/tbh/Desktop/Dijkstra/src/dijkstra.cpp
+dijkstra.hpp
+/home/tbh/Desktop/Dijkstra/src/dijkstra.hpp
+
+/home/tbh/Desktop/Dijkstra/src/main.cpp
+iostream
+-
+dijkstra.hpp
+/home/tbh/Desktop/Dijkstra/src/dijkstra.hpp
+

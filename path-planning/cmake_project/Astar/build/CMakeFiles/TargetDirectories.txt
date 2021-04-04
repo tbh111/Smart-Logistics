@@ -1,0 +1,3 @@
+/home/tbh/Desktop/Astar/build/CMakeFiles/rebuild_cache.dir
+/home/tbh/Desktop/Astar/build/CMakeFiles/Astar.dir
+/home/tbh/Desktop/Astar/build/CMakeFiles/edit_cache.dir
