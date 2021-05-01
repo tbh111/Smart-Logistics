@@ -1,4 +1,5 @@
 # Smart-Logistics
+Unfortunately, I don't take part in further competition, as our group ranked 80th in the first part, failed to have a AGV.
 ### vision
 Test environment: 
 - Ubuntu 18.04, Opencv 4.0.0, Cmake 3.19.4
